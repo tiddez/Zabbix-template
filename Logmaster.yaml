@@ -1,0 +1,188 @@
+zabbix_export:
+  version: '6.4'
+  template_groups:
+    - uuid: 10576a334291439cb948b556753968ad
+      name: nobreaks
+  templates:
+    - uuid: 4cdfcf2c10544b25b500e013ca6fb485
+      template: 'Nobreak LOGMASTER'
+      name: 'Nobreak LOGMASTER'
+      groups:
+        - name: nobreaks
+      items:
+        - uuid: f76afce808d94c00a1edd0fe48dfdbdf
+          name: 'Carga das Baterias em %'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.935.1.1.1.2.2.1.0
+          key: batteryCapacity
+          history: 5d
+          trends: 10d
+          units: '%'
+          description: 'Carga da bateria em %'
+        - uuid: 356c86c43b074cedbca0a94037074d93
+          name: 'Estado das baterias'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.935.1.1.1.2.1.1.0
+          key: batteryStatus
+          history: 5d
+          trends: 10d
+          description: |
+            1 Desconhecido
+            2 Normal
+            3 Carga baixa
+        - uuid: a40789b6567445c38d6b8509ff4032f0
+          name: 'Temperatura do inversor'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.935.1.1.1.2.2.3.0
+          key: batteryTemperature
+          history: 5d
+          trends: 10d
+          units: °C
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+        - uuid: 9078e9cc44c74aa1b5be609b5c2a4c84
+          name: 'Nome do dispositivo'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.1.5.0
+          key: sysName.0
+          history: 5d
+          trends: '0'
+          value_type: TEXT
+        - uuid: 6b50ca62f26d4f489abb93bd11dd8617
+          name: Uptime
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.1.3.0
+          key: sysUpTimeInstance
+          history: 5d
+          trends: 10d
+          units: Days
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.01'
+        - uuid: 00eda50704d64dfcacf829b4c787045d
+          name: 'Capacidade das baterias'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.935.1.1.1.2.2.1.0
+          key: upsAdvBatteryCapacity
+          history: 5d
+          trends: 10d
+          value_type: FLOAT
+          units: '%'
+        - uuid: f2166c72b1834f0b827eee31a4a754a9
+          name: 'Tensão de entrada'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.3.3.1.3.1
+          key: upsAdvInputVoltage
+          history: 5d
+          trends: 10d
+          value_type: FLOAT
+          units: V
+          inventory_link: VENDOR
+        - uuid: 8baf9701702247498ec09b3a5ad7c0ec
+          name: 'Carga de saída em %'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.4.4.1.5.1
+          key: upsAdvOutputLoad
+          history: 5d
+          trends: 10d
+          value_type: FLOAT
+          units: '%'
+          description: 'Percentual de carga de saída da capacidade nominal do equipamento.'
+        - uuid: a86ec8823d734b7291ed6a90552b0bae
+          name: 'Tensão de saída'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.4.4.1.2.1
+          key: upsAdvOutputVoltage
+          history: 5d
+          trends: 10d
+          value_type: FLOAT
+          units: V
+        - uuid: d5f4f29fb8df4932843e309a490028e6
+          name: 'Tempo restante das baterias'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.935.1.1.1.2.2.4.0
+          key: upsBaseBatteryRunTimeRemaining
+          history: 5d
+          trends: 10d
+          value_type: FLOAT
+          description: |
+            0 - Ok
+            Qualquer outro não ok
+        - uuid: 8191249fea264fa798600878c37c5c58
+          name: 'Origem da saída'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.935.1.1.1.4.1.1.0
+          key: upsBaseOutputStatus
+          history: 5d
+          description: |
+            null		N/A
+            7		Reducer
+            6		Booster
+            5		Battery
+            4		Bypass
+            3		Normal
+            2		None
+            1		Other
+        - uuid: 6fe890b77f3845149ef11579b171a490
+          name: 'Tempo de uso das baterias'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.2.1.33.1.2.2.0
+          key: upsBasicBatteryTimeOnBattery
+          history: 5d
+          trends: 10d
+          units: s
+        - uuid: fba6fca52c8d4b5abda13c6115f2dd05
+          name: 'Tensão das baterias'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.2.5.0
+          key: upsBatteryVoltage
+          history: 5d
+          trends: 10d
+          value_type: FLOAT
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+        - uuid: 5918aa8d754f45e1990ee0d107d7cd76
+          name: 'Temperatura do ambiente'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.935.1.1.1.9.1.1.0
+          key: upsEnvTemperatura
+          history: 5d
+          trends: 10d
+          units: °C
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+        - uuid: d69ae2c70fc14cae8104b5205f2d3061
+          name: 'Self test'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.935.1.1.1.7.2.3.0
+          key: upsSmartTestDiagnosticResults
+          history: 5d
+          trends: 10d
+          description: |
+            null		N/A
+            6		Nenhum Teste
+            5		Em Progresso
+            4		Abortado
+            3		Erro
+            2		Warning
+            1		Passou
+        - uuid: 4776e528e4aa4fc0ba9d7d574dc862fb
+          name: 'Disponibilidade SNMP'
+          type: INTERNAL
+          key: 'zabbix[host,snmp,available]'
+          history: 5d
+          trends: 10d
+          description: 'SNMP is not available for polling. Please check device connectivity and SNMP settings.'
+          triggers:
+            - uuid: fe3716486e7b412c82b66fbad8267840
+              expression: 'last(/Nobreak LOGMASTER/zabbix[host,snmp,available])=0'
+              name: 'No SNMP data collection'
+              priority: WARNING
+              description: 'SNMP is not available for polling. Please check device connectivity and SNMP settings.'
